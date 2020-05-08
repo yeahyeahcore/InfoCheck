@@ -1,0 +1,10 @@
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\InfoCheck.exe.config
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\InfoCheck.exe
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\InfoCheck.pdb
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Release\InfoCheck.exe
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Release\InfoCheck.pdb
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Release\ConsoleApplication1.csprojResolveAssemblyReference.cache
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Release\ConsoleApplication1.Properties.Resources.resources
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\obj\Release\ConsoleApplication1.csproj.GenerateResource.Cache
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\Properties\Resources.resx
+C:\Users\gutsc\Documents\Visual Studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\bin\Release\Properties\Resources.Designer.cs
