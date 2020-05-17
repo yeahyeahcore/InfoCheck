@@ -61,15 +61,6 @@ namespace ConsoleApplication1.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на .
-        /// </summary>
-        internal static string @__dll {
-            get {
-                return ResourceManager.GetString("*.dll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
         internal static byte[] Newtonsoft_Json {

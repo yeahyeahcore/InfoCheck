@@ -17,6 +17,8 @@ namespace ConsoleApplication1
             AssemblyRead read = new AssemblyRead();
             Temperature temp = new Temperature();
             File.WriteAllText(fileName, JsonConvert.SerializeObject(temp));
+            var res = JsonConvert.DeserializeObject(File.ReadAllText(fileName));
+            Console.WriteLine(res);
         }
     }
 }
