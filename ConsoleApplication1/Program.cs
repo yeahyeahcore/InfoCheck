@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using OpenHardwareMonitor;
 using Newtonsoft.Json;
 using System.IO;
+using System.Xml;
+using System.Threading;
 
 namespace ConsoleApplication1
 {
@@ -19,6 +21,7 @@ namespace ConsoleApplication1
             File.WriteAllText(fileName, JsonConvert.SerializeObject(temp));
             var res = JsonConvert.DeserializeObject(File.ReadAllText(fileName));
             Console.WriteLine(res);
+            
         }
     }
 }

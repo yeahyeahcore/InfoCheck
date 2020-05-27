@@ -16,6 +16,13 @@ namespace ConsoleApplication1
 {
     class Temperature
     {
+        public string ComputerName
+        {
+            get
+            {
+                return compname();
+            }
+        }
         public string NameCPU
         {
             get
@@ -24,7 +31,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public List<string> TemperatureCPU
+        public List<float?> TemperatureCPU
         {
             get
             {
@@ -33,7 +40,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public List<string> ClocksCPU
+        public List<float?> ClocksCPU
         {
             get
             {
@@ -42,25 +49,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public List<string> LoadCPU
-        {
-            get
-            {
-                loaddcpu();
-                return loadcpu;
-            }
-        }
-
-        public List<string> PowerCPU
-        {
-            get
-            {
-                powerrcpu();
-                return powercpu;
-            }
-        }
-
-        public string MemoryLoad
+        public float? MemoryLoad
         {
             get
             {
@@ -68,7 +57,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public List<string> MemoryData
+        public List<float?> MemoryData
         {
             get
             {
@@ -85,7 +74,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public string TemperatureHDD 
+        public float? TemperatureHDD 
         {
             get
             {
@@ -101,15 +90,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public string ClocksGPU
-        {
-            get
-            {
-                return clocksgpu();
-            }
-        }
-
-        public string LoadGPU
+        public float? LoadGPU
         {
             get
             {
@@ -117,7 +98,7 @@ namespace ConsoleApplication1
             }
         }
 
-        public List<string> DataGPU
+        public List<float?> DataGPU
         {
             get
             {
@@ -145,12 +126,10 @@ namespace ConsoleApplication1
         Computer thisComputer;
         StreamWriter writer;
         FileStream fs;
-        List<string> tempcpu = new List<string>();
-        List<string> clockscpu = new List<string>();
-        List<string> loadcpu = new List<string>();
-        List<string> powercpu = new List<string>();
-        List<string> memorydata = new List<string>();
-        List<string> datagpu = new List<string>();
+        List<float?> tempcpu = new List<float?>();
+        List<float?> clockscpu = new List<float?>();
+        List<float?> memorydata = new List<float?>();
+        List<float?> datagpu = new List<float?>();
 
         string path = Directory.GetCurrentDirectory();
         string filename = "log1.txt";
@@ -162,9 +141,9 @@ namespace ConsoleApplication1
             thisComputer.Open();
         }
 
-        public string temperaturehdd()
+        public float? temperaturehdd()
         {
-            string temperature = null;
+            float? temperature = null;
 
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
@@ -174,7 +153,7 @@ namespace ConsoleApplication1
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
                         if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Temperature)
-                            temperature = (thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                            temperature = (thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
@@ -201,6 +180,23 @@ namespace ConsoleApplication1
             return name;
         }
 
+        public string compname()
+        {
+            string name = null;
+
+            for (int i = 0; i < thisComputer.Hardware.Length; i++)
+            {
+                if (thisComputer.Hardware[i].HardwareType == HardwareType.Mainboard)
+                {
+                    thisComputer.Hardware[i].Update();
+                    name = (thisComputer.Hardware[i].Name);
+                    
+                }
+            }
+            name = (name == null) ? "error" : name;
+            return name;
+        }
+
         public void temperaturecpu()
         {
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
@@ -210,8 +206,8 @@ namespace ConsoleApplication1
                     thisComputer.Hardware[i].Update();
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Temperature)
-                            tempcpu.Add(thisComputer.Hardware[i].Sensors[j].Name + " : " +thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Temperature && thisComputer.Hardware[i].Sensors[j].Name != "CPU Package")
+                            tempcpu.Add(thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
@@ -227,16 +223,16 @@ namespace ConsoleApplication1
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
                         if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Data)
-                            memorydata.Add(thisComputer.Hardware[i].Sensors[j].Name + " : " + thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                            memorydata.Add(thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
             
         }
 
-        public string memorylload()
+        public float? memorylload()
         {
-            string memoryload = null;
+            float? memoryload = null;
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
                 if (thisComputer.Hardware[i].HardwareType == HardwareType.RAM)
@@ -245,43 +241,11 @@ namespace ConsoleApplication1
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
                         if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Load)
-                            memoryload = (thisComputer.Hardware[i].Sensors[j].Name + " : " + thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                            memoryload = (thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
             return memoryload;
-        }
-
-        public void loaddcpu()
-        {
-            for (int i = 0; i < thisComputer.Hardware.Length; i++)
-            {
-                if (thisComputer.Hardware[i].HardwareType == HardwareType.CPU)
-                {
-                    thisComputer.Hardware[i].Update();
-                    for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
-                    {
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Load)
-                            loadcpu.Add(thisComputer.Hardware[i].Sensors[j].Name + " : " + thisComputer.Hardware[i].Sensors[j].Value.ToString());
-                    }
-                }
-            }
-        }
-
-        public void powerrcpu()
-        {
-            for (int i = 0; i < thisComputer.Hardware.Length; i++)
-            {
-                if (thisComputer.Hardware[i].HardwareType == HardwareType.CPU)
-                {
-                    thisComputer.Hardware[i].Update();
-                    for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
-                    {
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Power)
-                            powercpu.Add(thisComputer.Hardware[i].Sensors[j].Name + " : " + thisComputer.Hardware[i].Sensors[j].Value.ToString());
-                    }
-                }
-            }
         }
 
         public void clockcpu()
@@ -293,8 +257,8 @@ namespace ConsoleApplication1
                     thisComputer.Hardware[i].Update();
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Clock)
-                            clockscpu.Add(thisComputer.Hardware[i].Sensors[j].Name + " : " + thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Clock && thisComputer.Hardware[i].Sensors[j].Name != "Bus Speed")
+                            clockscpu.Add(thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
@@ -319,29 +283,9 @@ namespace ConsoleApplication1
             return name;
         }
 
-        public string clocksgpu()
+        public float? loadggpu()
         {
-            string temperature = null;
-
-            for (int i = 0; i < thisComputer.Hardware.Length; i++)
-            {
-                if (thisComputer.Hardware[i].HardwareType == HardwareType.GpuAti || thisComputer.Hardware[i].HardwareType == HardwareType.GpuNvidia)
-                {
-                    for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
-                    {
-                        thisComputer.Hardware[i].Update();
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Temperature)
-                            temperature = (thisComputer.Hardware[i].Sensors[j].Value.ToString());
-                    }
-                }
-            }
-            temperature = (temperature == null) ? "error" : temperature;
-            return temperature;
-        }
-
-        public string loadggpu()
-        {
-            string temperature = null;
+            float? temperature = null;
 
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
@@ -351,11 +295,10 @@ namespace ConsoleApplication1
                     {
                         thisComputer.Hardware[i].Update();
                         if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Load)
-                            temperature = (thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                            temperature = (thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
-            temperature = (temperature == null) ? "error" : temperature;
             return temperature;
         }
 
@@ -369,7 +312,7 @@ namespace ConsoleApplication1
                     {
                         thisComputer.Hardware[i].Update();
                         if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.SmallData)
-                            datagpu.Add(thisComputer.Hardware[i].Sensors[j].Name + ":" + thisComputer.Hardware[i].Sensors[j].Value.ToString());
+                            datagpu.Add(thisComputer.Hardware[i].Sensors[j].Value);
                     }
                 }
             }
