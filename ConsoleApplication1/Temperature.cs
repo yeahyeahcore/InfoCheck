@@ -14,127 +14,58 @@ using System.IO;
 
 namespace ConsoleApplication1
 {
-    class Temperature
+    public class Device
     {
-        public string ComputerName
-        {
-            get
-            {
-                return compname();
-            }
-        }
-        public string NameCPU
-        {
-            get
-            {
-                return namecpu();
-            }
-        }
+        public string pc { get; set; }
+        public string mac_address { get; set; }
+        public string ip_address { get; set; }
+        public string cpu_name { get; set; }
+        public string hdd_name { get; set; }
+        public string gpu_name { get; set; }
+    }
+    public class Cpu
+    {
+        public List<float?> temp { get; set; }
 
-        public List<float?> TemperatureCPU
-        {
-            get
-            {
-                temperaturecpu();
-                return tempcpu;
-            }
-        }
+        public List<float?> clock { get; set; }
+    }
 
-        public List<float?> ClocksCPU
-        {
-            get
-            {
-                clockcpu();
-                return clockscpu;
-            }
-        }
+    public class Memory
+    {
+        public float? memory_load { get; set; }
+        public float? memory_used { get; set; }
+        public float? memory_available { get; set; }
+    }
 
-        public float? MemoryLoad
-        {
-            get
-            {
-                return memorylload();
-            }
-        }
+    public class Hdd
+    {
+        public float? temp { get; set; }
+    }
 
-        public List<float?> MemoryData
-        {
-            get
-            {
-                memoryddata();
-                return memorydata;
-            }
-        }
+    public class Gpu
+    {
+        public float? load { get; set; }
+        public float? memory_used { get; set; }
+        public float? memory_free { get; set; }
+    }
 
-        public string NameHDD
-        {
-            get
-            {
-                return namehdd();
-            }
-        }
-
-        public float? TemperatureHDD 
-        {
-            get
-            {
-                return temperaturehdd();
-            }
-        }
-
-        public string NameGPU
-        {
-            get
-            {
-                return namegpu();
-            }
-        }
-
-        public float? LoadGPU
-        {
-            get
-            {
-                return loadggpu();
-            }
-        }
-
-        public List<float?> DataGPU
-        {
-            get
-            {
-                dataggpu();
-                return datagpu;
-            }
-        }
-
-        public string LocalIpAddress
-        {
-            get
-            {
-                return GetLocalIpAddress();
-            }
-        }
-
-        public string MACaddress
-        {
-            get
-            {
-                return GetSystemMACID();
-            }
-        }
-
+    public class Temperatures
+    {
+        public object cpu { get; set; }
+        public object memory { get; set; }
+        public object hdd { get; set; }
+        public object gpu { get; set; }
+        public object device { get; set; }
+    }
+    public class Temperature
+    {
         Computer thisComputer;
         StreamWriter writer;
         FileStream fs;
-        List<float?> tempcpu = new List<float?>();
-        List<float?> clockscpu = new List<float?>();
-        List<float?> memorydata = new List<float?>();
-        List<float?> datagpu = new List<float?>();
-
         string path = Directory.GetCurrentDirectory();
         string filename = "log1.txt";
 
-        public Temperature() 
+        public Temperature()
         {
             //Запуск работы вычисления
             thisComputer = new Computer() { CPUEnabled = true, GPUEnabled = true, HDDEnabled = true, RAMEnabled = true, MainboardEnabled = true };
@@ -190,15 +121,16 @@ namespace ConsoleApplication1
                 {
                     thisComputer.Hardware[i].Update();
                     name = (thisComputer.Hardware[i].Name);
-                    
+
                 }
             }
             name = (name == null) ? "error" : name;
             return name;
         }
 
-        public void temperaturecpu()
+        public List<float?> temperaturecpu()
         {
+            List<float?> tempcpu = new List<float?>();
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
                 if (thisComputer.Hardware[i].HardwareType == HardwareType.CPU)
@@ -211,10 +143,12 @@ namespace ConsoleApplication1
                     }
                 }
             }
+            return tempcpu;
         }
 
-        public void memoryddata()
+        public float? memoryused()
         {
+            float? memoryused = null;
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
                 if (thisComputer.Hardware[i].HardwareType == HardwareType.RAM)
@@ -222,12 +156,30 @@ namespace ConsoleApplication1
                     thisComputer.Hardware[i].Update();
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Data)
-                            memorydata.Add(thisComputer.Hardware[i].Sensors[j].Value);
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Data && thisComputer.Hardware[i].Sensors[j].Name == "Used Memory")
+                            memoryused = thisComputer.Hardware[i].Sensors[j].Value;
                     }
                 }
             }
-            
+            return memoryused;
+        }
+
+        public float? memoryavaible()
+        {
+            float? memoryavaible = null;
+            for (int i = 0; i < thisComputer.Hardware.Length; i++)
+            {
+                if (thisComputer.Hardware[i].HardwareType == HardwareType.RAM)
+                {
+                    thisComputer.Hardware[i].Update();
+                    for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
+                    {
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.Data && thisComputer.Hardware[i].Sensors[j].Name == "Available Memory")
+                            memoryavaible = thisComputer.Hardware[i].Sensors[j].Value;
+                    }
+                }
+            }
+            return memoryavaible;
         }
 
         public float? memorylload()
@@ -248,8 +200,9 @@ namespace ConsoleApplication1
             return memoryload;
         }
 
-        public void clockcpu()
+        public List<float?> clockcpu()
         {
+            List<float?> clockscpu = new List<float?>();
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
                 if (thisComputer.Hardware[i].HardwareType == HardwareType.CPU)
@@ -262,6 +215,7 @@ namespace ConsoleApplication1
                     }
                 }
             }
+            return clockscpu;
         }
 
         public string namecpu()
@@ -302,8 +256,9 @@ namespace ConsoleApplication1
             return temperature;
         }
 
-        public void dataggpu()
+        public float? freegpu()
         {
+            float? freegpu = null;
             for (int i = 0; i < thisComputer.Hardware.Length; i++)
             {
                 if (thisComputer.Hardware[i].HardwareType == HardwareType.GpuAti || thisComputer.Hardware[i].HardwareType == HardwareType.GpuNvidia)
@@ -311,11 +266,29 @@ namespace ConsoleApplication1
                     for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
                     {
                         thisComputer.Hardware[i].Update();
-                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.SmallData)
-                            datagpu.Add(thisComputer.Hardware[i].Sensors[j].Value);
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.SmallData && thisComputer.Hardware[i].Sensors[j].Name == "GPU Memory Free")
+                            freegpu = thisComputer.Hardware[i].Sensors[j].Value;
                     }
                 }
             }
+            return freegpu;
+        }
+        public float? usedgpu()
+        {
+            float? usedgpu = null;
+            for (int i = 0; i < thisComputer.Hardware.Length; i++)
+            {
+                if (thisComputer.Hardware[i].HardwareType == HardwareType.GpuAti || thisComputer.Hardware[i].HardwareType == HardwareType.GpuNvidia)
+                {
+                    for (int j = 0; j < thisComputer.Hardware[i].Sensors.Length; j++)
+                    {
+                        thisComputer.Hardware[i].Update();
+                        if (thisComputer.Hardware[i].Sensors[j].SensorType == SensorType.SmallData && thisComputer.Hardware[i].Sensors[j].Name == "GPU Memory Used")
+                            usedgpu = thisComputer.Hardware[i].Sensors[j].Value;
+                    }
+                }
+            }
+            return usedgpu;
         }
 
         public string namegpu()
