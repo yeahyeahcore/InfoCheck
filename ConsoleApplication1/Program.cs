@@ -16,6 +16,7 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
+            AssemblyRead read = new AssemblyRead();
             Temperature temperature = new Temperature();
             var temp = new Temperatures
             {
@@ -56,8 +57,6 @@ namespace ConsoleApplication1
             };
 
             string fileName = Path.Combine(Environment.CurrentDirectory, "info.json");
-            AssemblyRead read = new AssemblyRead();
-            
             File.WriteAllText(fileName, JsonConvert.SerializeObject(temp));
             var res = JsonConvert.DeserializeObject(File.ReadAllText(fileName));
             Console.WriteLine(res);
