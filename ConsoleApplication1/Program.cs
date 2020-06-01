@@ -28,9 +28,9 @@ namespace ConsoleApplication1
 
                 memory = new Memory
                 {
-                    memory_load = temperature.memorylload(),
-                    memory_used = temperature.memoryused(),
-                    memory_available = temperature.memoryavaible()
+                    load = temperature.memorylload(),
+                    used = temperature.memoryused(),
+                    available = temperature.memoryavaible()
                 },
 
                 hdd = new Hdd
@@ -50,9 +50,9 @@ namespace ConsoleApplication1
                     pc = temperature.compname(),
                     mac_address = temperature.GetSystemMACID(),
                     ip_address = temperature.GetLocalIpAddress(),
-                    cpu_name = temperature.namecpu(),
-                    hdd_name = temperature.namehdd(),
-                    gpu_name = temperature.namegpu()
+                    cpu = temperature.namecpu(),
+                    hdd = temperature.namehdd(),
+                    gpu = temperature.namegpu()
                 }
             };
 

@@ -19,9 +19,9 @@ namespace ConsoleApplication1
         public string pc { get; set; }
         public string mac_address { get; set; }
         public string ip_address { get; set; }
-        public string cpu_name { get; set; }
-        public string hdd_name { get; set; }
-        public string gpu_name { get; set; }
+        public string cpu { get; set; }
+        public string hdd { get; set; }
+        public string gpu { get; set; }
     }
     public class Cpu
     {
@@ -32,9 +32,9 @@ namespace ConsoleApplication1
 
     public class Memory
     {
-        public float? memory_load { get; set; }
-        public float? memory_used { get; set; }
-        public float? memory_available { get; set; }
+        public float? load { get; set; }
+        public float? used { get; set; }
+        public float? available { get; set; }
     }
 
     public class Hdd
