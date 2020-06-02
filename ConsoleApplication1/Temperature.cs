@@ -14,15 +14,6 @@ using System.IO;
 
 namespace ConsoleApplication1
 {
-    public class Device
-    {
-        public string pc { get; set; }
-        public string mac_address { get; set; }
-        public string ip_address { get; set; }
-        public string cpu { get; set; }
-        public string hdd { get; set; }
-        public string gpu { get; set; }
-    }
     public class Cpu
     {
         public List<float?> temp { get; set; }
@@ -55,7 +46,12 @@ namespace ConsoleApplication1
         public object memory { get; set; }
         public object hdd { get; set; }
         public object gpu { get; set; }
-        public object device { get; set; }
+        public string pc { get; set; }
+        public string mac_address { get; set; }
+        public string ip_address { get; set; }
+        public string cpu_name { get; set; }
+        public string hdd_name { get; set; }
+        public string gpu_name { get; set; }
     }
     public class Temperature
     {

@@ -44,22 +44,19 @@ namespace ConsoleApplication1
                     memory_used = temperature.usedgpu(),
                     memory_free = temperature.freegpu()
                 },
-
-                device = new Device
-                {
-                    pc = temperature.compname(),
-                    mac_address = temperature.GetSystemMACID(),
-                    ip_address = temperature.GetLocalIpAddress(),
-                    cpu = temperature.namecpu(),
-                    hdd = temperature.namehdd(),
-                    gpu = temperature.namegpu()
-                }
+                pc = temperature.compname(),
+                mac_address = temperature.GetSystemMACID(),
+                ip_address = temperature.GetLocalIpAddress(),
+                cpu_name = temperature.namecpu(),
+                hdd_name = temperature.namehdd(),
+                gpu_name = temperature.namegpu()
             };
 
             string fileName = Path.Combine(Environment.CurrentDirectory, "info.json");
             File.WriteAllText(fileName, JsonConvert.SerializeObject(temp));
             var res = JsonConvert.DeserializeObject(File.ReadAllText(fileName));
             Console.WriteLine(res);
+            Console.ReadLine();
         }
     }
 }
